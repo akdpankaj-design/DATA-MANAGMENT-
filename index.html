@@ -1,0 +1,45 @@
+<!doctype html><html lang="hi"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><title>Akshardham Business Suite</title>
+<style>
+:root{--bg:#faf6ef;--side:#3b1d0a;--ink:#f7e7cf;--mute:#d9b98a;--or:#fb923c;--gold:#b7791f}
+*{box-sizing:border-box}html,body{height:100%;margin:0}
+body{display:flex;background:var(--bg);font:15px/1.4 "Segoe UI",system-ui,sans-serif}
+aside{width:210px;background:var(--side);color:var(--ink);display:flex;flex-direction:column;border-right:4px solid var(--gold);flex-shrink:0;padding-top:env(safe-area-inset-top,0px)}
+aside h1{margin:0;padding:16px 14px 2px;font-size:17px}aside p{margin:0;padding:0 14px 12px;color:var(--mute);font-size:12px}
+nav{display:flex;flex-direction:column;overflow-y:auto}
+nav button{background:none;border:0;border-left:4px solid transparent;color:var(--ink);text-align:left;padding:11px 14px;font:inherit;cursor:pointer}
+nav button:hover{background:rgba(255,255,255,.07)}
+nav button.on{background:rgba(255,255,255,.12);border-left-color:var(--or);color:var(--or);font-weight:600}
+nav button:focus-visible{outline:2px solid var(--or);outline-offset:-2px}
+main{flex:1;position:relative;min-width:0}
+iframe{position:absolute;inset:0;width:100%;height:100%;border:0;display:none;background:#fff}iframe.on{display:block}
+#hi{padding:30px;color:#7a6a5a}
+@media(max-width:700px){body{flex-direction:column}aside{width:100%;border-right:0;border-bottom:4px solid var(--gold)}aside p{display:none}aside h1{padding:10px 14px}
+nav{flex-direction:row}nav button{white-space:nowrap;border-left:0;border-bottom:3px solid transparent;padding:9px 12px}nav button.on{border-bottom-color:var(--or)}}
+@media(prefers-color-scheme:dark){body{background:#17110c}#hi{color:#a8967f}}
+#lg{position:fixed;inset:0;z-index:9;background:#3b1d0a;color:#f7e7cf;display:none;align-items:center;justify-content:center;flex-direction:column;gap:12px;text-align:center;padding:20px}
+#lg h2{margin:0}#lg button,#bar button{background:#fb923c;color:#2a1405;border:0;border-radius:6px;padding:11px 20px;font:inherit;font-weight:600;cursor:pointer}#lg button:disabled{opacity:.5}
+#lgm{color:#f0b9b9;min-height:1.3em;max-width:340px}
+#bar{display:none;position:fixed;left:0;right:0;top:0;z-index:8;background:#b45309;color:#fff;padding:8px 12px;gap:10px;align-items:center;justify-content:center}
+#usr{display:none;margin-top:auto;padding:12px 14px;border-top:1px solid rgba(255,255,255,.15);font-size:12px;color:#d9b98a;word-break:break-all}#usr button{margin-top:6px;background:none;border:1px solid #d9b98a;color:#f7e7cf;border-radius:5px;padding:4px 10px;cursor:pointer;font:inherit}
+@media(max-width:700px){#usr{margin-top:0;display:none!important}}
+</style></head><body>
+<aside><h1>Akshardham Suite</h1><p>Saare apps ek jagah</p><nav id="nav"></nav><div id="usr"><span id="em"></span><br><button id="out">Logout</button></div></aside>
+<div id="lg"><h2>Akshardham Suite</h2><p>Apne Google account se login karo.<br>Data aapki apni Google Drive mein save hoga.</p><button id="lgb">Google se login karo</button><div id="lgm"></div></div>
+<div id="bar"><span>Session khatam ho gaya.</span><button id="barb">Dobara login</button></div>
+<main id="m"><div id="hi">Left se koi section chuno.</div></main>
+<script src="config.js"></script>
+<script src="https://accounts.google.com/gsi/client" async defer></script>
+<script src="hub.js"></script>
+<script>
+var A=[["accounting","Accounting"],["invoicing","Invoicing"],["expense","Expenses"],["crm","CRM / Leads"],["contracts","Contracts"],["property-management","Property"],["inventory","Inventory"],["pos","Point of Sale"],["contacts","Contacts"]];
+var nav=document.getElementById("nav"),m=document.getElementById("m");
+A.forEach(function(a){var b=document.createElement("button");b.textContent=a[1];b.dataset.k=a[0];b.onclick=function(){open_(a[0])};nav.appendChild(b)});
+function open_(k){
+ var h=document.getElementById("hi");if(h)h.remove();
+ var f=document.getElementById("f_"+k);
+ if(!f){f=document.createElement("iframe");f.id="f_"+k;f.src=k+"/";f.title=k;f.allow="clipboard-write; fullscreen";m.appendChild(f)}
+ m.querySelectorAll("iframe").forEach(function(i){i.classList.toggle("on",i===f)});
+ nav.querySelectorAll("button").forEach(function(b){b.classList.toggle("on",b.dataset.k===k)});
+ try{history.replaceState(null,"","#"+k)}catch(e){}}
+var h=location.hash.slice(1);open_(A.some(function(a){return a[0]==h})?h:"accounting");
+</script></body></html>
